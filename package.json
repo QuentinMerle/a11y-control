@@ -9,7 +9,8 @@
   },
   "files": [
     "src",
-    "README.md"
+    "README.md",
+    "_agent"
   ],
   "scripts": {
     "dev": "npx serve . --listen 3131"

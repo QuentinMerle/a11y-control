@@ -198,6 +198,22 @@ All modern browsers supporting **Custom Elements v1 + Shadow DOM**:
 
 ---
 
+---
+
+## 🤖 AI Agent Support
+
+This project is **Agent-Ready**. It includes a specialized "Skill" for AI assistants (like Windsurf, Cursor, or Antigravity) to help you integrate and maintain accessibility.
+
+The skill provides instructions for:
+- Seamless integration in any framework.
+- Ensuring new components are compatible with the menu (CSS variables, relative units).
+- Automated verification loops for accessibility checks.
+
+**How to use:**
+If you've installed via npm, you can find the skill in `node_modules/accessibility-menu/_agent/skills/accessibility-integration`. Copy this folder to your project's `_agent/skills/` to activate it for your assistant.
+
+---
+
 ## License
 
 MIT — feel free to use, modify, and distribute.
