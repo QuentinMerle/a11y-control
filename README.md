@@ -7,11 +7,20 @@
 
 ---
 
+## ⚖️ Legal Disclaimer
+
+This component is an assistive tool designed to improve user experience, but please note:
+- **Assistive Aid Only**: Using this menu does not automatically guarantee compliance with legal standards (like WCAG, ADA, or Section 508).
+- **Not an Audit**: It is not a substitute for professional accessibility testing or certified audits.
+- **Liability**: Website owners are responsible for their own site's legal compliance. This software is provided "as-is" without warranty of any kind.
+
+---
+
 ## ⚡ Quick Start — 30 Seconds
 
 ```html
 <!-- 1. Load the component -->
-<script type="module" src="https://cdn.example.com/accessibility-menu.js"></script>
+<script type="module" src="./src/accessibility-menu.js"></script>
 
 <!-- 2. Add the tag (before </body>) -->
 <accessibility-menu lang="en"></accessibility-menu>
