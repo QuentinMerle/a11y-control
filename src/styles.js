@@ -308,17 +308,56 @@ export const SHADOW_CSS = `
 const GLOBAL_CSS = `
   /* Accessibility Menu — classes applied to <html> */
 
-  html.a11y-high-contrast * {
+  /* High Contrast — Clean targeted approach (no universal * selector) */
+  html.a11y-high-contrast,
+  html.a11y-high-contrast body,
+  html.a11y-high-contrast main,
+  html.a11y-high-contrast section,
+  html.a11y-high-contrast header,
+  html.a11y-high-contrast footer,
+  html.a11y-high-contrast article,
+  html.a11y-high-contrast div,
+  html.a11y-high-contrast p,
+  html.a11y-high-contrast h1,
+  html.a11y-high-contrast h2,
+  html.a11y-high-contrast h3,
+  html.a11y-high-contrast h4,
+  html.a11y-high-contrast span,
+  html.a11y-high-contrast li {
     background-color: #000 !important;
     color: #fff !important;
-    border-color: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
-  html.a11y-high-contrast a              { color: #ffff00 !important; text-decoration: underline !important; }
-  html.a11y-high-contrast img            { filter: brightness(.9) contrast(1.2); }
+
+  html.a11y-high-contrast a { 
+    color: #ffff00 !important; 
+    text-decoration: underline !important; 
+    background-color: transparent !important;
+  }
+  
+  html.a11y-high-contrast img,
+  html.a11y-high-contrast video,
+  html.a11y-high-contrast picture { 
+    filter: brightness(.8) contrast(1.5) !important;
+    border: 1px solid #fff !important;
+  }
+
   html.a11y-high-contrast button,
   html.a11y-high-contrast input,
   html.a11y-high-contrast select,
-  html.a11y-high-contrast textarea       { background-color: #000 !important; color: #fff !important; border: 2px solid #fff !important; }
+  html.a11y-high-contrast textarea { 
+    background-color: #000 !important; 
+    color: #fff !important; 
+    border: 2px solid #fff !important; 
+    border-radius: 0 !important;
+  }
+
+  /* Ensure the component itself stays usable but follows high contrast */
+  html.a11y-high-contrast accessibility-menu::part(panel) {
+    border: 2px solid #fff !important;
+  }
 
   html.a11y-grayscale { filter: grayscale(100%); }
 

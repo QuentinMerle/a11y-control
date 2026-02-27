@@ -7,11 +7,9 @@
 const ICON_STYLE = 'width:18px;height:18px;vertical-align:middle;margin-right:8px;flex-shrink:0';
 
 /** Accessibility figure icon — used on the floating trigger button */
-export const ICON_A11Y = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <circle cx="12" cy="4" r="1" fill="currentColor" />
-  <path d="M12 8v7" />
-  <path d="M6 10c3-1 9-1 12 0" />
-  <path d="m9 20 3-5 3 5" />
+export const ICON_A11Y = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <circle cx="12" cy="4" r="2.2" />
+  <path d="M20.5 6c-2.6 0.7-5.7 1-8.5 1s-5.9-0.3-8.5-1L3 8c1.9 0.5 4 0.8 6 1v13h2v-6h2v6h2V9c2-0.2 4.1-0.5 6-1l-0.5-2z" />
 </svg>`;
 
 /** ✕ icon — close button */
