@@ -1,9 +1,9 @@
 ---
-name: Integrate Accessibility Menu
-description: How to integrate the <accessibility-menu> web component into a web project (Vanilla, React, Vue, etc.)
+name: Integrate A11yControl
+description: How to integrate the <a11y-control> web component into a web project (Vanilla, React, Vue, etc.)
 ---
 
-# Integrate Accessibility Menu
+# Integrate A11yControl
 
 Use this skill to quickly add a production-ready accessibility menu to any website or application.
 
@@ -20,20 +20,20 @@ Insert the script tag to load the Web Component.
 
 **Vanilla HTML:**
 ```html
-<script type="module" src="./src/accessibility-menu.js"></script>
+<script type="module" src="./src/a11y-control.js"></script>
 ```
 
 **NPM (if installed):**
 ```javascript
-import 'accessibility-menu';
+import 'a11y-control';
 ```
 
 ### 3. Insert the Tag
-Add the `<accessibility-menu>` tag before the closing `</body>` tag.
+Add the `<a11y-control>` tag before the closing `</body>` tag.
 
 **Basic Configuration:**
 ```html
-<accessibility-menu lang="en" position="bottom-right"></accessibility-menu>
+<a11y-control lang="en" position="bottom-right"></a11y-control>
 ```
 
 ### 4. Configuration Options
@@ -46,7 +46,7 @@ Add the `<accessibility-menu>` tag before the closing `</body>` tag.
 Suggest to the user to customize the menu colors to match their brand using CSS variables in their global stylesheet:
 
 ```css
-accessibility-menu {
+a11y-control {
   --a11y-accent: #your-brand-color;
   --a11y-radius: 8px;
 }

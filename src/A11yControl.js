@@ -1,12 +1,13 @@
 /**
- * @file AccessibilityMenu.js
- * The AccessibilityMenu Custom Element class.
+ * @file A11yControl.js
+ * The A11yControl Custom Element class.
  *
  * Responsibilities:
  *  - Manage user preferences (load/save via localStorage)
  *  - Render the Shadow DOM panel
  *  - Apply preference effects to the host document
  *  - Handle keyboard navigation and focus trap
+ *  - Expose a clean, branded API
  */
 
 import { STORAGE_KEY, DEFAULT_PREFS, I18N }   from './constants.js';
@@ -35,9 +36,9 @@ function getFocusable(root) {
   return [...root.querySelectorAll(FOCUSABLE_SELECTOR)];
 }
 
-// ── AccessibilityMenu ──────────────────────────────────────────────────────────
+// ── A11yControl ──────────────────────────────────────────────────────────
 
-export class AccessibilityMenu extends HTMLElement {
+export class A11yControl extends HTMLElement {
   static get observedAttributes() {
     return ['lang', 'position'];
   }

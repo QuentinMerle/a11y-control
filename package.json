@@ -1,11 +1,11 @@
 {
-  "name": "accessibility-menu",
+  "name": "a11y-control",
   "version": "1.0.0",
   "description": "A plug-and-play accessibility menu, WCAG 2.1 AA compliant, built as a native Web Component.",
   "type": "module",
-  "main": "src/accessibility-menu.js",
+  "main": "src/a11y-control.js",
   "exports": {
-    ".": "./src/accessibility-menu.js"
+    ".": "./src/a11y-control.js"
   },
   "files": [
     "src",

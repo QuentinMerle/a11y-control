@@ -1,9 +1,9 @@
-# `<accessibility-menu>`
+# `<a11y-control>` (A11yControl)
 
 > A plug-and-play accessibility menu, **WCAG 2.1 AA** compliant, built as a native Web Component.  
 > Zero dependencies. Zero build. One single tag.
 
-**[🌐 Live Demo](https://quentinmerle.github.io/accessibility-menu/demo/)**
+**[🌐 Live Demo](https://quentinmerle.github.io/a11y-control/demo/)**
 
 ---
 
@@ -20,10 +20,10 @@ This component is an assistive tool designed to improve user experience, but ple
 
 ```html
 <!-- 1. Load the component -->
-<script type="module" src="./src/accessibility-menu.js"></script>
+<script type="module" src="./src/a11y-control.js"></script>
 
 <!-- 2. Add the tag (before </body>) -->
-<accessibility-menu lang="en"></accessibility-menu>
+<a11y-control lang="en"></a11y-control>
 ```
 
 That's it. The component handles the rest.
@@ -34,8 +34,8 @@ That's it. The component handles the rest.
 
 ### Vanilla HTML
 ```html
-<script type="module" src="./src/accessibility-menu.js"></script>
-<accessibility-menu lang="en"></accessibility-menu>
+<script type="module" src="./src/a11y-control.js"></script>
+<a11y-control lang="en"></a11y-control>
 ```
 
 ### React / Next.js
@@ -45,13 +45,13 @@ import { useEffect } from 'react';
 export default function App() {
   useEffect(() => {
     // Dynamic import to ensure it only runs on the client
-    import('./path/to/accessibility-menu.js');
+    import('./path/to/a11y-control.js');
   }, []);
 
   return (
     <>
       {/* your app */}
-      <accessibility-menu lang="en" />
+      <a11y-control lang="en" />
     </>
   );
 }
@@ -60,17 +60,17 @@ export default function App() {
 ### Vue
 ```vue
 <template>
-  <accessibility-menu lang="en" />
+  <a11y-control lang="en" />
 </template>
 
 <script setup>
-import './path/to/accessibility-menu.js';
+import './path/to/a11y-control.js';
 </script>
 ```
 
 ### Via npm (local)
 ```js
-import './node_modules/accessibility-controls/src/accessibility-menu.js';
+import './node_modules/a11y-control/src/a11y-control.js';
 ```
 
 ---
@@ -84,8 +84,8 @@ import './node_modules/accessibility-controls/src/accessibility-menu.js';
 
 ```html
 <!-- Examples -->
-<accessibility-menu lang="fr" position="bottom-left"></accessibility-menu>
-<accessibility-menu lang="en" position="top-right"></accessibility-menu>
+<a11y-control lang="fr" position="bottom-left"></a11y-control>
+<a11y-control lang="en" position="top-right"></a11y-control>
 ```
 
 ---
@@ -112,7 +112,7 @@ Preferences are **automatically saved** in `localStorage` and restored on every 
 Customize the appearance from your global stylesheet (variables are exposed via `:host`):
 
 ```css
-accessibility-menu {
+a11y-control {
   --a11y-accent:       #005fcc;   /* Primary color (buttons, active toggles) */
   --a11y-accent-hover: #0047a3;
   --a11y-bg:           #ffffff;   /* Panel background */
@@ -168,7 +168,7 @@ The component is fully keyboard-operable:
 
 ```
 src/
-├── accessibility-menu.js    ← Entry point (import/script this)
+├── a11y-control.js       ← Entry point (import/script this)
 ├── AccessibilityMenu.js     ← Custom Element class
 ├── constants.js             ← Default preferences, i18n
 ├── icons.js                 ← SVG icons
@@ -210,7 +210,7 @@ The skill provides instructions for:
 - Automated verification loops for accessibility checks.
 
 **How to use:**
-If you've installed via npm, you can find the skill in `node_modules/accessibility-menu/_agent/skills/accessibility-integration`. Copy this folder to your project's `_agent/skills/` to activate it for your assistant.
+If you've installed via npm, you can find the skill in `node_modules/a11y-control/_agent/skills/accessibility-integration`. Copy this folder to your project's `_agent/skills/` to activate it for your assistant.
 
 ---
 

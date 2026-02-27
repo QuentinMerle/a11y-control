@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accessibility Menu — Demo</title>
+  <title>A11yControl — Demo</title>
   <meta name="description" content="Demonstration of the accessibility-menu web component, WCAG 2.1 AA compliant." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -367,7 +367,7 @@
   <!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
   <header class="hero" role="banner">
     <div class="badge">WCAG 2.1 AA</div>
-    <h1>Accessibility Menu</h1>
+    <h1>A11yControl</h1>
     <p>
       A standalone Web Component to make your site more accessible —
       zero dependencies, no build step, just one tag to add.
@@ -380,7 +380,7 @@
     <!-- Features -->
     <section aria-labelledby="features-heading" class="card">
       <h2 id="features-heading">Features</h2>
-      <p>Click the <strong>♿</strong> button in the top-right corner to open the menu.</p>
+      <p>Click the <strong>♿</strong> button in the bottom-right corner to open the menu.</p>
 
       <div class="features" role="list">
         <div class="feature" role="listitem">
@@ -426,10 +426,10 @@
       <h2 id="usage-heading">Integration</h2>
       <p>Two lines are enough in any project:</p>
       <pre><code><span class="comm">&lt;!-- 1. Load the component --&gt;</span>
-<span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="val">"module"</span> <span class="attr">src</span>=<span class="val">"accessibility-menu.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="val">"module"</span> <span class="attr">src</span>=<span class="val">"a11y-control.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
 
 <span class="comm">&lt;!-- 2. Place the tag (ideally before &lt;/body&gt;) --&gt;</span>
-<span class="tag">&lt;accessibility-menu</span> <span class="attr">lang</span>=<span class="val">"en"</span> <span class="attr">position</span>=<span class="val">"bottom-right"</span><span class="tag">&gt;&lt;/accessibility-menu&gt;</span></code></pre>
+<span class="tag">&lt;a11y-control</span> <span class="attr">lang</span>=<span class="val">"en"</span> <span class="attr">position</span>=<span class="val">"bottom-right"</span><span class="tag">&gt;&lt;/a11y-control&gt;</span></code></pre>
 
       <h3>Available Attributes</h3>
       <pre><code><span class="comm">lang     </span>  <span class="val">"en"</span> | <span class="val">"fr"</span>                   (default: "en")
@@ -438,7 +438,7 @@
 
       <h3>From npm (local)</h3>
       <pre><code><span class="comm">// ES module import</span>
-import <span class="val">'./src/accessibility-menu.js'</span>;</code></pre>
+import <span class="val">'./src/a11y-control.js'</span>;</code></pre>
     </section>
 
     <!-- Sample article for testing -->
@@ -461,7 +461,7 @@ import <span class="val">'./src/accessibility-menu.js'</span>;</code></pre>
         <picture>
           <img
             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='220'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f46e5'/%3E%3Cstop offset='1' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='220' fill='url(%23g)'/%3E%3Ctext x='400' y='120' text-anchor='middle' fill='white' font-size='36' font-family='sans-serif' font-weight='700' opacity='.7'%3E♿ accessibility-menu%3C/text%3E%3C/svg%3E"
-            alt="Accessibility menu component demonstration banner" />
+            alt="A11yControl component demonstration banner" />
         </picture>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
@@ -524,8 +524,8 @@ import <span class="val">'./src/accessibility-menu.js'</span>;</code></pre>
   </main>
 
   <!-- ══ WEB COMPONENT ══════════════════════════════════════════════════════ -->
-  <script type="module" src="../src/accessibility-menu.js"></script>
-  <accessibility-menu lang="en" position="bottom-right"></accessibility-menu>
+  <script type="module" src="../src/a11y-control.js"></script>
+  <a11y-control lang="en" position="bottom-right"></a11y-control>
 
 </body>
 
