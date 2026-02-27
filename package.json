@@ -1,0 +1,17 @@
+{
+  "name": "accessibility-controls",
+  "version": "0.1.0",
+  "description": "A WCAG 2-compliant accessibility menu Web Component",
+  "type": "module",
+  "keywords": ["accessibility", "wcag", "web-component", "a11y"],
+  "license": "MIT",
+  "main": "src/accessibility-menu.js",
+  "exports": {
+    ".": "./src/accessibility-menu.js"
+  },
+  "scripts": {
+    "dev": "npx serve . --listen 3000",
+    "lint": "npx eslint src/"
+  },
+  "devDependencies": {}
+}
