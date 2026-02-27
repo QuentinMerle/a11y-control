@@ -3,6 +3,8 @@
 > A plug-and-play accessibility menu, **WCAG 2.1 AA** compliant, built as a native Web Component.  
 > Zero dependencies. Zero build. One single tag.
 
+**[🌐 Live Demo](https://quentinmerle.github.io/accessibility-menu/demo/)**
+
 ---
 
 ## ⚡ Quick Start — 30 Seconds
