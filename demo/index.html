@@ -453,6 +453,39 @@
       box-shadow: var(--shadow-md);
     }
 
+    /* ── Features Modular Feature Gating Banner ── */
+    .features-modular-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      margin-top: 18px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .features-modular-banner strong {
+      color: var(--text-primary);
+    }
+    .features-modular-banner code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      color: var(--accent);
+    }
+    .modular-banner-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
     /* ── Features Precision Grid ── */
     .features-grid {
       display: grid;
@@ -1147,6 +1180,13 @@
         </p>
       </div>
 
+      <div class="features-modular-banner" role="region" aria-label="Modular Feature Gating notice">
+        <span class="modular-banner-icon" aria-hidden="true">🧩</span>
+        <div>
+          <strong>100% Modular &amp; Customizable:</strong> Don't need all 13 features? Use the <code>features="..."</code> attribute to whitelist only what you need, or <code>exclude="..."</code> to disable specific options (e.g. <code>exclude="darkMode"</code> if your site already has its own theme switcher).
+        </div>
+      </div>
+
       <div class="features-grid" role="list">
         <!-- Font Size Stepper -->
         <article class="feature-box" role="listitem">
@@ -1488,6 +1528,10 @@
               <span>a11y.setPref('speechSynthesis')</span>
               <span style="color:#f59e0b;">VOX</span>
             </button>
+            <button type="button" class="terminal-btn" id="wb-exclude" style="border-color:#a855f7;">
+              <span>⚡ a11y.toggleExclude('darkMode')</span>
+              <span style="color:#c084fc;">MOD</span>
+            </button>
             <button type="button" class="terminal-btn" id="wb-audit" style="border-color:#38bdf8;">
               <span>🔍 a11y.audit()</span>
               <span style="color:#34d399;">DIAG</span>
@@ -1515,13 +1559,14 @@
         <span class="section-badge">// 04. Integration</span>
         <h2 id="docs-title" class="section-title">Zero Configuration Installation</h2>
         <p class="section-desc">
-          Drop the CDN script or install via npm. Full TypeScript definitions and AI Agent manifests included.
+          Drop the CDN script, install via npm, or configure modular feature gating. Full TypeScript definitions and AI Agent manifests included.
         </p>
       </div>
 
       <div class="code-tabs" role="tablist">
         <button type="button" class="code-tab-btn active" role="tab" aria-selected="true" data-tab="cdn">Universal CDN</button>
         <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="npm">NPM / Bundlers</button>
+        <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="modular">Modular Gating (features/exclude)</button>
         <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="agent">AI Agent (llms.txt)</button>
       </div>
 
@@ -1546,6 +1591,25 @@ import 'a11y-control';
 
 // Or import the class directly for TypeScript / subclassing:
 import { A11yControl } from 'a11y-control';</code></pre>
+      </div>
+
+      <!-- Modular Gating Pane -->
+      <div class="code-block-wrapper" id="pane-modular" style="display: none;">
+        <button type="button" class="copy-btn" data-copy-target="code-modular">Copy Code</button>
+        <pre><code id="code-modular">&lt;!-- 1. Whitelist mode: only render specified assistive tools --&gt;
+&lt;a11y-control features="fontSize, textSpacing, dyslexiaFont, readingGuide"&gt;&lt;/a11y-control&gt;
+
+&lt;!-- 2. Blacklist mode: exclude tools your site already has (e.g. existing theme switch) --&gt;
+&lt;a11y-control exclude="darkMode"&gt;&lt;/a11y-control&gt;
+
+&lt;!-- 3. Audio-only setup: speech synthesis reader widget --&gt;
+&lt;a11y-control features="speechSynthesis"&gt;&lt;/a11y-control&gt;
+
+&lt;!-- 4. Dynamic JavaScript reactivity (updates instantly without page reload) --&gt;
+&lt;script&gt;
+  const a11y = document.querySelector('a11y-control');
+  a11y.setAttribute('exclude', 'darkMode, grayscale');
+&lt;/script&gt;</code></pre>
       </div>
 
       <!-- Agent Pane -->
@@ -1778,6 +1842,20 @@ import { A11yControl } from 'a11y-control';</code></pre>
     document.getElementById('wb-speech')?.addEventListener('click', () => {
       window.a11y?.setPref('speechSynthesis', !window.a11y?.getPref('speechSynthesis'));
     });
+    document.getElementById('wb-exclude')?.addEventListener('click', () => {
+      const el = document.querySelector('a11y-control');
+      if (!el) return;
+      const cur = el.getAttribute('exclude') || '';
+      const isExcluded = cur.includes('darkMode');
+      if (isExcluded) {
+        el.removeAttribute('exclude');
+        logStream('a11y.removeAttribute("exclude")', { status: 'All 13 features enabled' });
+      } else {
+        el.setAttribute('exclude', 'darkMode');
+        logStream('a11y.setAttribute("exclude", "darkMode")', { status: 'Dark mode hidden from panel' });
+      }
+      window.a11y?.open();
+    });
     document.getElementById('wb-audit')?.addEventListener('click', () => {
       const report = window.a11y?.audit();
       logStream('a11y.audit()', report);
@@ -1790,7 +1868,7 @@ import { A11yControl } from 'a11y-control';</code></pre>
         document.querySelectorAll('.code-tab-btn').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         const target = tab.dataset.tab;
-        ['cdn', 'npm', 'agent'].forEach(p => {
+        ['cdn', 'npm', 'agent', 'modular'].forEach(p => {
           const el = document.getElementById(`pane-${p}`);
           if (el) el.style.display = (p === target) ? 'block' : 'none';
         });

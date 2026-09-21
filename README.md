@@ -80,21 +80,76 @@ import 'a11y-control';
 
 ---
 
-## ⚙️ Attributes & Modular Features
+## ⚙️ Attributes & Modular Feature Gating
+
+`<a11y-control>` is **100% modular**. You don't have to impose all 13 assistive tools on your users if some don't fit your website architecture or if you already provide your own features (e.g. an existing dark mode theme toggle).
+
+### Attributes Reference
 
 | Attribute | Values | Default | Description |
 |---|---|---|---|
-| `lang` | `"en"` \| `"fr"` \| custom | `"en"` | Interface language |
-| `position` | `"bottom-right"` \| `"bottom-left"` \| `"top-right"` \| `"top-left"` | `"bottom-right"` | Corner position |
-| `features` | Comma-separated list | `undefined` (all) | Whitelist of controls to display |
-| `exclude` | Comma-separated list | `undefined` (none) | Blacklist of controls to hide |
+| `lang` | `"en"` \| `"fr"` \| custom | `"en"` | Interface language (auto-detects from `<html>` or `navigator.language`) |
+| `position` | `"bottom-right"` \| `"bottom-left"` \| `"top-right"` \| `"top-left"` | `"bottom-right"` | Screen corner for the floating trigger button |
+| `features` | Comma-separated keys | `undefined` (all) | **Whitelist mode**: display *only* the listed tools |
+| `exclude` | Comma-separated keys | `undefined` (none) | **Blacklist mode**: display all tools *except* the listed ones |
 
+### Available Feature Keys for `features` / `exclude`
+
+| Key | Section | Description |
+|---|---|---|
+| `fontSize` (or `fontScale`) | Typography | Stepper from 80% to 200% with live screen reader readouts |
+| `highContrast` | Display | High contrast black background, white text, yellow links |
+| `grayscale` | Display | Monochrome grayscale filter |
+| `highlightLinks` | Display | High-visibility underlines and outline halos on interactive links |
+| `bigCursor` | Display | High-contrast enlarged cursor |
+| `dyslexiaFont` | Reading & Focus | OpenDyslexic specialized typeface |
+| `textSpacing` | Reading & Focus | WCAG 1.4.12 letter, word, and line spacing override |
+| `alignLeft` | Reading & Focus | Eliminates text justification and hyphenation |
+| `readingGuide` | Reading & Focus | Horizontal reading ruler tracking pointer position |
+| `readingMask` | Reading & Focus | Dimmed screen overlay with clear focal slit for ADHD & focus |
+| `reduceMotion` | Reading & Focus | Disables transitions and animations (0.001ms) |
+| `speechSynthesis` (or `speech`) | Voice & Tools | Web Speech API audio reader with karaoke streaming dock |
+| `darkMode` | Theme | Deep dark theme |
+
+### Practical Configuration Scenarios
+
+#### 1. Blacklist: "My site already has its own Dark Mode toggle"
+Avoid duplicate theme switchers by simply excluding `darkMode`:
 ```html
-<!-- Example: only show font sizing, high contrast, and speech -->
-<a11y-control features="fontSize, highContrast, speechSynthesis"></a11y-control>
-
-<!-- Example: exclude dark mode if your site already has its own theme switcher -->
 <a11y-control exclude="darkMode"></a11y-control>
+```
+
+#### 2. Blacklist: Exclude several tools
+```html
+<a11y-control exclude="darkMode, grayscale, readingMask"></a11y-control>
+```
+
+#### 3. Whitelist: "I only want reading & dyslexia tools for a blog / news site"
+Display only text scaling, dyslexia font, text spacing, and the reading guide:
+```html
+<a11y-control features="fontSize, dyslexiaFont, textSpacing, readingGuide"></a11y-control>
+```
+
+#### 4. Whitelist: "Voice-only assistive reader"
+Provide an on-demand Text-to-Speech tool without extra visual toggles:
+```html
+<a11y-control features="speechSynthesis"></a11y-control>
+```
+
+#### 5. Dynamic Reactivity (Change features on the fly via JavaScript)
+Because `features` and `exclude` are observed attributes (`observedAttributes`), `<a11y-control>` automatically and instantly re-renders its panel whenever you update them in JavaScript — zero reload required:
+```javascript
+const a11y = document.querySelector('a11y-control');
+
+// Dynamically hide dark mode
+a11y.setAttribute('exclude', 'darkMode');
+
+// Or switch to a minimal whitelist
+a11y.setAttribute('features', 'fontSize, highContrast');
+
+// Clear filters to restore all 13 tools
+a11y.removeAttribute('exclude');
+a11y.removeAttribute('features');
 ```
 
 ---
