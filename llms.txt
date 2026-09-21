@@ -1,0 +1,126 @@
+# <a11y-control> — Technical Manifest for LLMs & AI Agents
+
+> A zero-dependency, plug-and-play accessibility toolbar and assistive aid for the web, WCAG 2.1 AA/AAA compliant, built as a native Web Component.
+
+## Quick Installation & Usage
+
+```html
+<!-- Native ES Module / CDN -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control/src/a11y-control.js"></script>
+<a11y-control lang="en" position="bottom-right"></a11y-control>
+```
+
+```bash
+npm install a11y-control
+```
+
+```javascript
+import 'a11y-control';
+// Or import the class:
+import { A11yControl } from 'a11y-control';
+```
+
+## HTML Attributes
+
+- `lang`: `"en"` | `"fr"` (default: `"en"`).
+- `position`: `"bottom-right"` | `"bottom-left"` | `"top-right"` | `"top-left"` (default: `"bottom-right"`).
+- `features`: Comma-separated whitelist of controls (e.g. `features="fontSize,highContrast,speechSynthesis"`).
+- `exclude`: Comma-separated blacklist of controls (e.g. `exclude="darkMode,grayscale"`).
+
+## Available Features & Preferences
+
+- `fontScale`: number (0.8 to 2.0) — Sets root `html.style.fontSize` in % (WCAG 1.4.4).
+- `highContrast`: boolean — Black background, white text, yellow links (WCAG 1.4.6).
+- `grayscale`: boolean — Filter 100% grayscale (WCAG 1.4.11).
+- `dyslexiaFont`: boolean — Loads and applies OpenDyslexic (WCAG 1.4.8).
+- `textSpacing`: boolean — Line-height 1.6, letter-spacing 0.12em, word-spacing 0.16em (WCAG 1.4.12).
+- `alignLeft`: boolean — Forces left-align and cancels hyphens (WCAG 1.4.8).
+- `bigCursor`: boolean — Custom high-contrast SVG pointer.
+- `readingGuide`: boolean — Horizontal yellow line tracking cursor.
+- `readingMask`: boolean — Dimmed screen with horizontal focal slit tracking cursor.
+- `reduceMotion`: boolean — Transitions/animations set to 0.001ms (WCAG 2.3.3).
+- `highlightLinks`: boolean — Bold outline on all `<a>` tags (WCAG 1.4.1).
+- `darkMode`: boolean — Toggles dark theme.
+- `speechSynthesis`: boolean — Web Speech API reader with floating selection trigger and live word boundary karaoke.
+
+## Machine-Readable State & Runtime Access
+
+- The active instance is globally accessible at `window.a11y`.
+- The document root carries serialized JSON state: `document.documentElement.getAttribute('data-a11y-state')`
+- All CSS classes applied to `<html>`:
+  - `.a11y-high-contrast`
+  - `.a11y-grayscale`
+  - `.a11y-reduce-motion`
+  - `.a11y-highlight-links`
+  - `.a11y-dark-mode`
+  - `.a11y-dyslexia`
+  - `.a11y-text-spacing`
+  - `.a11y-align-left`
+  - `.a11y-big-cursor`
+- CSS Custom Properties (set on `a11y-control` element, cascade into Shadow DOM):
+  - `--a11y-accent`, `--a11y-accent-hover`, `--a11y-bg`, `--a11y-surface`
+  - `--a11y-border`, `--a11y-text`, `--a11y-text-muted`
+  - `--a11y-radius`, `--a11y-shadow`, `--a11y-transition`
+  - `--a11y-trigger-size` (default: 52px) — size of the floating button
+- CSS Part exposed: `a11y-control::part(trigger)` — the floating trigger button
+
+## Public JavaScript API
+
+```javascript
+const a11y = document.querySelector('a11y-control') || window.a11y;
+
+// Panel UI
+a11y.open();
+a11y.close();
+a11y.toggle();
+
+// Preference getters & setters
+a11y.getPref('textSpacing');          // returns boolean
+a11y.setPref('fontScale', 1.2);       // applies and saves
+a11y.getPrefs();                       // returns copy of entire state object
+a11y.reset();                          // resets to defaults
+
+// DOM Audit (for AI code repair & dev check)
+const report = a11y.audit();
+// { issuesCount: 2, missingAlt: 1, unlabeledInputs: 1, emptyButtons: 0, details: [...] }
+
+// Static i18n registration
+A11yControl.registerLocale('es', {
+  triggerLabel: 'Ajustes de accesibilidad',
+  title: 'Accesibilidad',
+  close: 'Cerrar',
+  // ...
+});
+```
+
+## Custom Events
+
+All events bubble and have `composed: true` (traversing Shadow DOM boundary):
+- `a11y-change`: `{ detail: { key, value, prefs } }`
+- `a11y-open`: `{}`
+- `a11y-close`: `{}`
+- `a11y-reset`: `{ detail: { prefs } }`
+
+## Tool Calling / Function Calling Schema (OpenAI / Anthropic / Gemini)
+
+```json
+{
+  "name": "set_accessibility_preferences",
+  "description": "Adjust accessibility settings of the webpage (font size, contrast, text spacing, dyslexia font, etc.)",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "fontScale": { "type": "number", "minimum": 0.8, "maximum": 2.0 },
+      "highContrast": { "type": "boolean" },
+      "dyslexiaFont": { "type": "boolean" },
+      "textSpacing": { "type": "boolean" },
+      "alignLeft": { "type": "boolean" },
+      "bigCursor": { "type": "boolean" },
+      "reduceMotion": { "type": "boolean" },
+      "readingMask": { "type": "boolean" },
+      "speechSynthesis": { "type": "boolean" },
+      "darkMode": { "type": "boolean" }
+    }
+  }
+}
+```

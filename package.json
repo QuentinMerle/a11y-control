@@ -1,16 +1,24 @@
 {
   "name": "a11y-control",
-  "version": "1.0.1",
-  "description": "A plug-and-play accessibility menu, WCAG 2.1 AA compliant, built as a native Web Component.",
+  "version": "1.1.0",
+  "description": "A plug-and-play accessibility toolbar and assistive aid for the web, WCAG 2.1 AA/AAA compliant, built as a native Web Component.",
   "type": "module",
   "main": "src/a11y-control.js",
+  "types": "src/a11y-control.d.ts",
+  "unpkg": "src/a11y-control.js",
+  "jsdelivr": "src/a11y-control.js",
   "exports": {
-    ".": "./src/a11y-control.js"
+    ".": {
+      "types": "./src/a11y-control.d.ts",
+      "import": "./src/a11y-control.js",
+      "default": "./src/a11y-control.js"
+    }
   },
   "files": [
     "src",
     "README.md",
-    "_agent"
+    "_agent",
+    "llms.txt"
   ],
   "scripts": {
     "dev": "npx serve . --listen 3131"

@@ -28,3 +28,6 @@ import { A11yControl } from './A11yControl.js';
 if (!customElements.get('a11y-control')) {
   customElements.define('a11y-control', A11yControl);
 }
+
+export { A11yControl };
+export default A11yControl;

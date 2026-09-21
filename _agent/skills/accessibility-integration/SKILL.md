@@ -1,101 +1,141 @@
 ---
 name: Integrate A11yControl
-description: How to integrate the <a11y-control> web component into a web project (Vanilla, React, Vue, etc.)
+description: How to integrate, configure, and maintain accessibility with the <a11y-control> web component in any project.
 ---
 
 # Integrate A11yControl
 
-Use this skill to quickly add a production-ready accessibility menu to any website or application.
+Use this skill to quickly add and maintain a production-ready, WCAG 2.1 AA/AAA compliant accessibility toolbar in any web project.
 
 ## 📋 Prerequisites
-The project must support ES Modules (modern browsers or a bundler like Vite/Webpack).
+The host project must support ES Modules (modern browser or bundler like Vite, Next.js, Nuxt, Astro, Webpack).
 
-## 🛠 Integration Steps
+---
 
-### 1. Identify the Entry Point
-Locate the main HTML file (`index.html`) or the root component of the application.
+## 🛠️ Integration Steps
 
-### 2. Load the Component
-Insert the script tag to load the Web Component.
+### 1. Load the Component
 
-**Vanilla HTML:**
-```html
-<script type="module" src="./src/a11y-control.js"></script>
+**Via NPM (recommended):**
+```bash
+npm install a11y-control
 ```
-
-**NPM (if installed):**
 ```javascript
 import 'a11y-control';
+// Or import the class:
+import { A11yControl } from 'a11y-control';
 ```
 
-### 3. Insert the Tag
-Add the `<a11y-control>` tag before the closing `</body>` tag.
+**Via CDN (zero-install):**
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control/src/a11y-control.js"></script>
+```
 
-**Basic Configuration:**
+### 2. Insert the Tag
+Add `<a11y-control>` in your root HTML template (e.g. before closing `</body>`) or root layout component.
+
 ```html
 <a11y-control lang="en" position="bottom-right"></a11y-control>
 ```
 
-### 4. Configuration Options
+### 3. Attributes & Modular Features
 | Attribute | Description | Options | Default |
 |---|---|---|---|
 | `lang` | UI Language | `en`, `fr` | `en` |
 | `position` | Button position | `bottom-right`, `bottom-left`, `top-right`, `top-left` | `bottom-right` |
+| `features` | Whitelist of controls | e.g. `fontSize,highContrast,textSpacing` | All |
+| `exclude` | Blacklist of controls | e.g. `darkMode,grayscale` | None |
 
-## 🎨 Professional Recommendation: Theming
-Suggest to the user to customize the menu colors to match their brand using CSS variables in their global stylesheet:
+---
 
-```css
-a11y-control {
-  --a11y-accent: #your-brand-color;
-  --a11y-radius: 8px;
-}
+## 🎛️ Controlling via JavaScript API
+
+The component automatically registers itself on `window.a11y` upon mounting:
+
+```javascript
+// Programmatic panel control (e.g. from your own navbar button)
+window.a11y.open();
+window.a11y.close();
+window.a11y.toggle();
+
+// Get & Set preferences
+window.a11y.setPref('textSpacing', true);
+window.a11y.setPref('fontScale', 1.3);
+const prefs = window.a11y.getPrefs();
+
+// Reset to system defaults
+window.a11y.reset();
 ```
 
-## 🧩 Developing Compatible Components
+### Listening to Custom Events
+```javascript
+window.addEventListener('a11y-change', (e) => {
+  console.log('Preference updated:', e.detail.key, '->', e.detail.value);
+  console.log('Complete state:', e.detail.prefs);
+});
+```
 
-To ensure that **new components** created in this project automatically respect the accessibility features, follow these rules:
+---
+
+## 🎨 Developing Compatible Components
+
+When building **new components** or pages in this project, ensure they adhere to these 5 accessibility principles:
 
 ### 1. Font Sizes (Inheritance)
-**NEVER** use hardcoded `px` for font sizes. Always use `rem`, `em`, or percentage.
-- **Why**: The menu scales `html { font-size: % }`. Using `rem` ensures all your components scale proportionally (80% to 200%).
+**NEVER** use hardcoded `px` for typography. Always use `rem`, `em`, or percentage.
+* *Why:* The menu sets `html { font-size: X% }`. Using relative units ensures typography scales smoothly from 80% to 200%.
 
-### 2. Colors & Contrast
-Use CSS Variables for your theme colors and add overrides for high-contrast mode.
+### 2. Text Spacing (WCAG 1.4.12)
+Avoid fixed element heights (`height: 40px` on text containers) that might clip text when `html.a11y-text-spacing` expands line-height and word-spacing. Use `min-height` instead.
+
+### 3. High Contrast & Dark Mode Overrides
+Use CSS variables and react to the host classes:
 ```css
-.my-component {
-  background: var(--bg-color, #fff);
-  color: var(--text-color, #1a1a1a);
+.my-card {
+  background: var(--bg-surface, #fff);
+  color: var(--text-primary, #111);
 }
 
-/* React to the high-contrast class on <html> */
-html.a11y-high-contrast .my-component {
+html.a11y-high-contrast .my-card {
   background: #000 !important;
   color: #fff !important;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
 }
 ```
 
-### 3. Reduced Motion
-Use the global class to kill animations if the user requests it.
+### 4. Reduced Motion
+Kill transitions and animations if requested:
 ```css
 html.a11y-reduce-motion *,
 html.a11y-reduce-motion *::before,
 html.a11y-reduce-motion *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
 }
 ```
 
-### 4. Links & Interactive Elements
-Ensure all interactive elements have highly visible focus rings, especially for `html.a11y-high-contrast` and `html.a11y-highlight-links`.
+### 5. Focus Visible
+Ensure all buttons and links have distinct focus outlines:
+```css
+button:focus-visible, a:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+```
 
-## ⚖️ Mandatory Legal Disclosure
-When integrating, always inform the user that this tool is an **assistive aid** and not a substitute for a full accessibility audit.
+---
 
-## 🤖 Agent Verification Loop
-1. Check if the script is loaded correctly.
-2. Verify the tag is present in the DOM.
-3. Check for console errors related to module paths.
+## 🤖 Agent Automated Verification & Repair Loop
+
+When an AI agent finishes generating or editing a page, run this diagnostic in the browser console or test suite:
+
+```javascript
+const report = window.a11y.audit();
+console.log(report);
+// Returns: { issuesCount, missingAlt, unlabeledInputs, emptyButtons, details }
+```
+
+If `report.issuesCount > 0`:
+1. Add missing `alt="..."` to flagged `<img>` elements.
+2. Ensure every `<input>` has a matching `<label for="...">` or `aria-label`.
+3. Ensure every `<button>` has visible text or an `aria-label`.

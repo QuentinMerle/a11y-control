@@ -5,6 +5,9 @@
 
 export const STORAGE_KEY = 'a11y-prefs';
 
+const isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const isReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /**
  * Default state for all accessibility preferences.
  * @type {Record<string, boolean|number>}
@@ -14,15 +17,22 @@ export const DEFAULT_PREFS = {
   highContrast: false,
   grayscale: false,
   dyslexiaFont: false,
-  reduceMotion: false,
-  highlightLinks: false,
+  textSpacing: false,
+  alignLeft: false,
+  bigCursor: false,
   readingGuide: false,
-  darkMode: false,
+  readingMask: false,
+  reduceMotion: isReducedMotion,
+  highlightLinks: false,
+  darkMode: isDark,
+  speechSynthesis: false,
+  speechVoice: '',
+  speechRate: 1.0,
 };
 
 /**
  * UI translations.
- * Add a new key here to support additional languages.
+ * Add a new key here to support additional languages or use registerLocale().
  */
 export const I18N = {
   en: {
@@ -35,12 +45,29 @@ export const I18N = {
     highContrast: 'High contrast',
     grayscale: 'Grayscale',
     dyslexiaFont: 'Dyslexia-friendly font',
+    textSpacing: 'Text spacing',
+    alignLeft: 'Align text left',
+    bigCursor: 'High-contrast cursor',
     reduceMotion: 'Reduce animations',
     highlightLinks: 'Highlight links',
     readingGuide: 'Reading guide',
+    readingMask: 'Reading mask',
+    speechSynthesis: 'Text to speech',
+    speechHint: 'Highlight any text to read aloud',
+    speechListen: 'Listen',
+    speechStop: 'Stop',
+    speechActive: 'TTS Active',
+    speechVoiceLabel: 'Voice',
+    speechRateLabel: 'Reading speed',
+    speechTestBtn: 'Test voice',
+    speechTestPhrase: 'Hello, this is an accessibility voice test.',
+    speechDefaultVoice: 'Default voice',
+    speechVoiceRecommended: 'Recommended voices',
+    speechVoiceOther: 'Other languages',
     resetAll: 'Reset all',
     sectionDisplay: 'Display',
-    sectionReading: 'Reading',
+    sectionReading: 'Reading & Focus',
+    sectionTools: 'Voice & Tools',
     sectionTheme: 'Theme',
     darkMode: 'Dark mode',
   },
@@ -54,13 +81,44 @@ export const I18N = {
     highContrast: 'Contraste élevé',
     grayscale: 'Niveaux de gris',
     dyslexiaFont: 'Police dyslexie',
+    textSpacing: 'Espacement du texte',
+    alignLeft: 'Aligner à gauche',
+    bigCursor: 'Grand curseur contrasté',
     reduceMotion: 'Réduire les animations',
     highlightLinks: 'Surligner les liens',
     readingGuide: 'Guide de lecture',
+    readingMask: 'Masque de lecture',
+    speechSynthesis: 'Synthèse vocale',
+    speechHint: 'Surlignez du texte pour l\'écouter',
+    speechListen: 'Écouter',
+    speechStop: 'Arrêter',
+    speechActive: 'TTS Actif',
+    speechVoiceLabel: 'Voix',
+    speechRateLabel: 'Vitesse de lecture',
+    speechTestBtn: 'Tester la voix',
+    speechTestPhrase: 'Bonjour, ceci est un test de voix pour l\'accessibilité.',
+    speechDefaultVoice: 'Voix par défaut',
+    speechVoiceRecommended: 'Voix recommandées',
+    speechVoiceOther: 'Autres langues',
     resetAll: 'Tout réinitialiser',
     sectionDisplay: 'Affichage',
-    sectionReading: 'Lecture',
+    sectionReading: 'Lecture & Focus',
+    sectionTools: 'Voix & Outils',
     sectionTheme: 'Thème',
     darkMode: 'Mode sombre',
   },
 };
+
+/**
+ * Registers or extends translations for a locale with fallback to English.
+ * @param {string} lang - Language code (e.g. 'es', 'de')
+ * @param {Partial<typeof I18N['en']>} dict - Dictionary of translations
+ */
+export function registerLocale(lang, dict) {
+  if (!lang || !dict) return;
+  I18N[lang] = {
+    ...I18N.en,
+    ...(I18N[lang] ?? {}),
+    ...dict,
+  };
+}
