@@ -7,6 +7,10 @@ export const STORAGE_KEY = 'a11y-prefs';
 
 const isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
 const isReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isHighContrast = typeof window !== 'undefined' && (
+  window.matchMedia('(prefers-contrast: more)').matches ||
+  window.matchMedia('(forced-colors: active)').matches
+);
 
 /**
  * Default state for all accessibility preferences.
@@ -14,7 +18,7 @@ const isReducedMotion = typeof window !== 'undefined' && window.matchMedia('(pre
  */
 export const DEFAULT_PREFS = {
   fontScale: 1,
-  highContrast: false,
+  highContrast: isHighContrast,
   grayscale: false,
   dyslexiaFont: false,
   textSpacing: false,

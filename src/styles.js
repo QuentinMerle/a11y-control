@@ -465,7 +465,7 @@ export const SHADOW_CSS = `
 `;
 
 // ── Global stylesheet injected once into <head> ────────────────────────────────
-const GLOBAL_CSS = `
+export const GLOBAL_CSS = `
   /* Accessibility Menu — classes applied to <html> */
 
   /* High Contrast — Clean targeted approach (no universal * selector) */
@@ -521,8 +521,9 @@ const GLOBAL_CSS = `
 
   html.a11y-grayscale { filter: grayscale(100%); }
 
+  html.a11y-dyslexia,
   html.a11y-dyslexia * {
-    font-family: 'OpenDyslexic', 'Comic Sans MS', Arial, sans-serif !important;
+    font-family: 'OpenDyslexic', 'Comic Sans MS', 'Comic Sans', 'Lexend', 'Verdana', Arial, sans-serif !important;
     letter-spacing: .05em !important;
     word-spacing: .2em !important;
     line-height: 1.7 !important;
@@ -637,14 +638,25 @@ export function injectGlobalStyles() {
   document.head.appendChild(style);
 }
 
+let _customDyslexicFontUrl = null;
+
 /**
- * Lazily loads the OpenDyslexic webfont (only when the dyslexia toggle is first enabled).
+ * Configure an optional self-hosted font stylesheet URL for OpenDyslexic.
+ * By default, null: uses local/system font-stack (100% CSP safe and zero tracking).
+ * @param {string|null} url
+ */
+export function setDyslexicFontUrl(url) {
+  _customDyslexicFontUrl = url;
+}
+
+/**
+ * Lazily loads the OpenDyslexic webfont only if a custom URL was provided.
  */
 export function loadOpenDyslexicFont() {
-  if (document.getElementById(DYSLEXIC_FONT_ID)) return;
+  if (!_customDyslexicFontUrl || document.getElementById(DYSLEXIC_FONT_ID)) return;
   const link = document.createElement('link');
   link.id   = DYSLEXIC_FONT_ID;
   link.rel  = 'stylesheet';
-  link.href = 'https://fonts.cdnfonts.com/css/opendyslexic';
+  link.href = _customDyslexicFontUrl;
   document.head.appendChild(link);
 }

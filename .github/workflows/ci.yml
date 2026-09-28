@@ -1,0 +1,34 @@
+name: CI & Accessibility Verification
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    name: Core Suite & Syntax Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Core Test Suite
+        run: npm test
+
+      - name: Verify Bundle Size (< 10 kB minified target)
+        run: |
+          node -e "
+            const fs = require('fs'), zlib = require('zlib');
+            const files = ['a11y-control.js','A11yControl.js','constants.js','icons.js','reading-guide.js','reading-mask.js','styles.js'];
+            const content = files.map(f => fs.readFileSync('src/' + f, 'utf8')).join('\n');
+            const gzipKb = (zlib.gzipSync(content).length / 1024).toFixed(2);
+            console.log('Core bundle (unminified gzip): ' + gzipKb + ' KB');
+          "

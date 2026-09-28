@@ -1,7 +1,7 @@
 {
   "name": "a11y-control",
-  "version": "1.1.1",
-  "description": "A plug-and-play accessibility toolbar and assistive aid for the web, WCAG 2.1 AA/AAA compliant, built as a native Web Component.",
+  "version": "1.2.0",
+  "description": "A zero-dependency native Web Component accessibility preferences toolbar & assistive companion, built to W3C APG and WCAG 2.1/2.2 standards. The lightweight, privacy-first open-source alternative to UserWay & accessiBe.",
   "type": "module",
   "main": "src/a11y-control.js",
   "types": "src/a11y-control.d.ts",
@@ -21,6 +21,7 @@
     "llms.txt"
   ],
   "scripts": {
+    "test": "node test/audit.js && for f in src/*.js; do node --check \"$f\" || exit 1; done",
     "dev": "npx serve . --listen 3131"
   },
   "repository": {
@@ -29,11 +30,30 @@
   },
   "keywords": [
     "accessibility",
-    "wcag",
-    "web-component",
     "a11y",
-    "menu",
-    "dark-mode"
+    "web-component",
+    "custom-elements",
+    "wcag",
+    "wcag-aaa",
+    "wcag-2-1",
+    "wcag-2-2",
+    "eaa-2025",
+    "european-accessibility-act",
+    "rgaa",
+    "ada-compliance",
+    "section-508",
+    "accessibility-toolbar",
+    "assistive-technology",
+    "text-to-speech",
+    "speech-synthesis",
+    "dyslexia-font",
+    "text-spacing",
+    "dark-mode",
+    "zero-dependencies",
+    "framework-agnostic",
+    "userway-alternative",
+    "accessibe-alternative",
+    "agent-ready"
   ],
   "author": "Quentin Merle",
   "license": "MIT",

@@ -16,29 +16,49 @@ The host project must support ES Modules (modern browser or bundler like Vite, N
 
 ### 1. Load the Component
 
-**Via NPM (recommended):**
+**Via NPM (recommended for bundlers):**
 ```bash
 npm install a11y-control
 ```
 ```javascript
 import 'a11y-control';
-// Or import the class:
-import { A11yControl } from 'a11y-control';
+// Or programmatically:
+import { initA11yControl } from 'a11y-control';
+initA11yControl({ position: 'bottom-right', lang: 'en' });
 ```
 
-**Via CDN (zero-install):**
+**Via Zero-Code Auto-Mount (Shopify, WordPress, Webflow, HTML):**
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control/src/a11y-control.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control" data-auto-mount></script>
 ```
 
-### 2. Insert the Tag
+**Via Standard CDN (manual tag placement):**
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control"></script>
+<a11y-control lang="en" position="bottom-right"></a11y-control>
+```
+
+### 2. Zero-FOUC Anti-Flicker Snippet (Production Best Practice)
+To prevent flash of unstyled content on slow connections before the ES module hydrates, insert this tiny inline script into the document's `<head>`:
+```html
+<script>
+  (function(){try{
+    var p=JSON.parse(localStorage.getItem('a11y-prefs')||'{}');
+    if(p.darkMode)document.documentElement.classList.add('a11y-dark-mode');
+    if(p.highContrast)document.documentElement.classList.add('a11y-high-contrast');
+    if(p.fontScale&&p.fontScale!==1)document.documentElement.style.fontSize=(p.fontScale*100)+'%';
+  }catch(e){}})();
+</script>
+```
+
+### 3. Insert the Tag (if not using `data-auto-mount`)
 Add `<a11y-control>` in your root HTML template (e.g. before closing `</body>`) or root layout component.
 
 ```html
 <a11y-control lang="en" position="bottom-right"></a11y-control>
 ```
 
-### 3. Attributes & Modular Features
+### 4. Attributes & Modular Features
 | Attribute | Description | Options | Default |
 |---|---|---|---|
 | `lang` | UI Language | `en`, `fr` | `en` |
@@ -65,6 +85,10 @@ const prefs = window.a11y.getPrefs();
 
 // Reset to system defaults
 window.a11y.reset();
+
+// Self-hosted dyslexic font override (optional, for air-gapped / strict CSP sites)
+import { A11yControl } from 'a11y-control';
+A11yControl.setDyslexicFontUrl('https://my-cdn.org/opendyslexic.css');
 ```
 
 ### Listening to Custom Events
@@ -104,7 +128,7 @@ html.a11y-high-contrast .my-card {
 ```
 
 ### 4. Reduced Motion
-Kill transitions and animations if requested:
+Kill transitions and animations if requested. `<a11y-control>` automatically halts HTML5 `<video>` autoplay and pauses Web Animations API runners when `reduceMotion` is engaged:
 ```css
 html.a11y-reduce-motion *,
 html.a11y-reduce-motion *::before,

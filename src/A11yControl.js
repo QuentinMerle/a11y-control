@@ -51,7 +51,9 @@ function getFocusable(root) {
 
 // ── A11yControl ──────────────────────────────────────────────────────────
 
-export class A11yControl extends HTMLElement {
+const BaseElement = typeof HTMLElement !== 'undefined' ? HTMLElement : class {};
+
+export class A11yControl extends BaseElement {
   static get observedAttributes() {
     return ['lang', 'position', 'features', 'exclude'];
   }
@@ -303,6 +305,18 @@ export class A11yControl extends HTMLElement {
     html.classList.toggle('a11y-text-spacing',     textSpacing);
     html.classList.toggle('a11y-align-left',       alignLeft);
     html.classList.toggle('a11y-big-cursor',       bigCursor);
+
+    // Reduce motion — pause HTML5 autoplay videos and running Web Animations
+    if (reduceMotion) {
+      document.querySelectorAll('video').forEach((v) => {
+        try { if (!v.paused) v.pause(); } catch (_) {}
+      });
+      if (typeof document.getAnimations === 'function') {
+        document.getAnimations().forEach((anim) => {
+          try { anim.pause(); } catch (_) {}
+        });
+      }
+    }
 
     // Machine-readable data state for AI agents
     html.setAttribute('data-a11y-state', JSON.stringify(this._prefs));

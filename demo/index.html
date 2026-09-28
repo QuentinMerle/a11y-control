@@ -1106,7 +1106,7 @@
       <a href="#" class="brand-link">
         <span class="brand-logo" aria-hidden="true">♿</span>
         <span>A11yControl</span>
-        <span class="brand-version">v1.1.1</span>
+        <span class="brand-version">v1.2.0</span>
       </a>
 
       <div class="nav-links" id="nav-menu">
@@ -1312,7 +1312,7 @@
               <span class="feature-spec-tag">Cognitive</span>
             </div>
             <h3>OpenDyslexic Font</h3>
-            <p>Dynamically downloads and applies weighted baseline typography to prevent letter inversion and rotation.</p>
+            <p>Applies a resilient dyslexia-optimized font stack ('OpenDyslexic', 'Comic Sans MS', 'Lexend', Arial) without external network requests (100% CSP safe).</p>
           </div>
           <button type="button" class="feature-test-btn" data-feature="dyslexiaFont">
             <span>Toggle Dyslexia Font</span>
@@ -1567,16 +1567,18 @@
         <button type="button" class="code-tab-btn active" role="tab" aria-selected="true" data-tab="cdn">Universal CDN</button>
         <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="npm">NPM / Bundlers</button>
         <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="modular">Modular Gating (features/exclude)</button>
+        <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="fouc">Zero-FOUC</button>
         <button type="button" class="code-tab-btn" role="tab" aria-selected="false" data-tab="agent">AI Agent (llms.txt)</button>
       </div>
 
       <!-- CDN Pane -->
       <div class="code-block-wrapper" id="pane-cdn">
         <button type="button" class="copy-btn" data-copy-target="code-cdn">Copy Code</button>
-        <pre><code id="code-cdn">&lt;!-- 1. Include script from CDN (Zero dependencies, &lt; 10 kB initial load) --&gt;
-&lt;script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control/src/a11y-control.js"&gt;&lt;/script&gt;
+        <pre><code id="code-cdn">&lt;!-- Option A: Zero-Code Auto-Mount in 1 line (Shopify, WordPress, Webflow, HTML) --&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control" data-auto-mount&gt;&lt;/script&gt;
 
-&lt;!-- 2. Place custom element tag anywhere on the page --&gt;
+&lt;!-- Option B: Standard Custom Element tag --&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/npm/a11y-control"&gt;&lt;/script&gt;
 &lt;a11y-control lang="en" position="bottom-right"&gt;&lt;/a11y-control&gt;</code></pre>
       </div>
 
@@ -1588,6 +1590,10 @@ npm install a11y-control
 
 // In your React, Vue, Svelte, or Vite entry point
 import 'a11y-control';
+
+// Or programmatically with the init helper:
+import { initA11yControl } from 'a11y-control';
+initA11yControl({ position: 'bottom-right', lang: 'en' });
 
 // Or import the class directly for TypeScript / subclassing:
 import { A11yControl } from 'a11y-control';</code></pre>
@@ -1612,6 +1618,20 @@ import { A11yControl } from 'a11y-control';</code></pre>
 &lt;/script&gt;</code></pre>
       </div>
 
+      <!-- Zero-FOUC Pane -->
+      <div class="code-block-wrapper" id="pane-fouc" style="display: none;">
+        <button type="button" class="copy-btn" data-copy-target="code-fouc">Copy Code</button>
+        <pre><code id="code-fouc">&lt;!-- Instant Zero-FOUC anti-flicker snippet (paste inside &lt;head&gt;) --&gt;
+&lt;script&gt;
+  (function(){try{
+    var p=JSON.parse(localStorage.getItem('a11y-prefs')||'{}');
+    if(p.darkMode)document.documentElement.classList.add('a11y-dark-mode');
+    if(p.highContrast)document.documentElement.classList.add('a11y-high-contrast');
+    if(p.fontScale&amp;&amp;p.fontScale!==1)document.documentElement.style.fontSize=(p.fontScale*100)+'%';
+  }catch(e){}})();
+&lt;/script&gt;</code></pre>
+      </div>
+
       <!-- Agent Pane -->
       <div class="code-block-wrapper" id="pane-agent" style="display: none;">
         <button type="button" class="copy-btn" data-copy-target="code-agent">Copy Code</button>
@@ -1626,8 +1646,15 @@ import { A11yControl } from 'a11y-control';</code></pre>
   "parameters": {
     "type": "object",
     "properties": {
-      "key": { "type": "string", "enum": ["speechSynthesis","textSpacing","alignLeft","bigCursor","readingMask","highContrast","darkMode"] },
-      "value": { "type": "boolean" }
+      "key": {
+        "type": "string",
+        "enum": [
+          "fontScale", "highContrast", "grayscale", "dyslexiaFont",
+          "textSpacing", "alignLeft", "bigCursor", "readingGuide",
+          "readingMask", "reduceMotion", "highlightLinks", "speechSynthesis", "darkMode"
+        ]
+      },
+      "value": { "type": ["boolean", "number"] }
     },
     "required": ["key", "value"]
   }
@@ -1868,7 +1895,7 @@ import { A11yControl } from 'a11y-control';</code></pre>
         document.querySelectorAll('.code-tab-btn').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         const target = tab.dataset.tab;
-        ['cdn', 'npm', 'agent', 'modular'].forEach(p => {
+        ['cdn', 'npm', 'modular', 'fouc', 'agent'].forEach(p => {
           const el = document.getElementById(`pane-${p}`);
           if (el) el.style.display = (p === target) ? 'block' : 'none';
         });

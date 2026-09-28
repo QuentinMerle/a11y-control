@@ -78,6 +78,15 @@ export class A11yControl extends HTMLElement {
   audit(): A11yAuditReport;
 }
 
+export interface InitA11yOptions {
+  lang?: string;
+  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  features?: string;
+  exclude?: string;
+}
+
+export function initA11yControl(options?: InitA11yOptions): A11yControl | null;
+
 declare global {
   interface Window {
     a11y?: A11yControl;
@@ -102,7 +111,10 @@ declare global {
         features?: string;
         exclude?: string;
         class?: string;
+        className?: string;
         style?: string | Record<string, string>;
+        ref?: any;
+        key?: any;
       };
     }
   }
