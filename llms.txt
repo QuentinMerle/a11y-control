@@ -49,13 +49,18 @@ initA11yControl({ position: 'bottom-right', lang: 'en' });
 - `dyslexiaFont`: boolean — Dyslexia-friendly system font stack ('OpenDyslexic', 'Comic Sans MS', 'Lexend', Arial). 100% CSP compliant, zero external network requests by default (WCAG 1.4.8).
 - `textSpacing`: boolean — Line-height 1.6, letter-spacing 0.12em, word-spacing 0.16em (WCAG 1.4.12).
 - `alignLeft`: boolean — Forces left-align and cancels hyphens (WCAG 1.4.8).
-- `bigCursor`: boolean — Custom high-contrast pointer (encoded as base64 PNG for universal browser security).
-- `readingGuide`: boolean — Horizontal yellow line tracking cursor.
-- `readingMask`: boolean — Dimmed screen with horizontal focal slit tracking cursor.
+- `bigCursor`: boolean — Custom high-contrast pointer (SVG vector yellow/black 32x36 for Retina/HiDPI screens).
+- `readingGuide`: boolean — Horizontal yellow line tracking cursor (GPU `translate3d`, `rAF` throttled).
+- `readingMask`: boolean — Dimmed screen with horizontal focal slit tracking cursor (`rAF` throttled).
 - `reduceMotion`: boolean — Transitions/animations set to 0.001ms, pauses HTML5 videos and Web Animations (WCAG 2.3.3).
 - `highlightLinks`: boolean — Bold outline on all `<a>` tags (WCAG 1.4.1).
 - `darkMode`: boolean — Toggles dark theme.
-- `speechSynthesis`: boolean — Web Speech API reader with floating selection trigger and live word boundary karaoke.
+- `speechSynthesis`: boolean — Web Speech API reader with floating selection trigger and live word boundary karaoke (strictly lazy-initialized on user toggle to prevent Safari/macOS IPC freezing).
+
+## Performance & Architecture Guarantees
+- **Safari/WebKit Speech Isolation**: Never queries `speechSynthesis` or adds listeners on page load. Strictly loaded when user activates TTS.
+- **120 Hz ProMotion GPU Compositing**: Reading guide & mask run on `transform: translate3d` + `requestAnimationFrame` + `{ passive: true }` (zero layout reflows / layout thrashing).
+- **Constructable Stylesheets**: Uses native `document.adoptedStyleSheets` with fallback `<style>` tag.
 
 ## Machine-Readable State & Runtime Access
 

@@ -384,8 +384,14 @@ a11y-control::part(trigger) {
 }
 ```
 
-> [!NOTE]
-> **Big Cursor implementation**: The high-visibility cursor is encoded as a base64 PNG (`data:image/png;base64,...`) instead of SVG. This is intentional — SVG data URIs for `cursor` are blocked by most browsers for security reasons. The PNG approach guarantees universal compatibility across Chrome, Firefox, Safari, and Edge.
+### Big Cursor
+The high-contrast cursor uses a crisp, Retina-ready SVG data URI (`width="32" height="36"`) with a dual-tone design (high-visibility `#FFFF00` yellow fill with a solid 2px `#000000` border and precise `(1, 1)` hotspot) for optimal visibility across high-DPI displays (4K, 5K, MacBook Retina).
+
+### Performance & Engine Architecture
+`<a11y-control>` is engineered with zero runtime impact on host page performance and frame rates:
+- **Zero-Freeze Lazy Speech Engine**: No contact with `window.speechSynthesis` on initial page load. On macOS/iOS (Safari & Firefox), touching `speechSynthesis` synchronously triggers IPC calls to `speechsynthesisd`, causing 1–2s main-thread freezes. `<a11y-control>` isolates speech voice queries and listeners strictly behind the user turning the TTS switch ON.
+- **120 Hz ProMotion GPU-Composited Reading Guides**: The reading guide bar and reading mask utilize GPU-accelerated `transform: translate3d(...)` with `will-change: transform`, passive event listeners (`{ passive: true }`), and `requestAnimationFrame` ticking, eliminating layout reflows (Layout Thrashing) even on high-polling rate gaming mice and 120 Hz displays.
+- **Constructable Stylesheets**: Global styling uses native `document.adoptedStyleSheets` (`new CSSStyleSheet()`) on modern browsers, parsed and compiled directly in C++ style engines without `<head>` DOM mutations. Fallback `<style>` tag is dynamically used on older browsers.
 
 ### Classes applied to `<html>`
 
@@ -433,8 +439,8 @@ html.a11y-text-spacing article { max-width: 65ch; } /* Give breathing room */
 | **RGAA 4.1 & BITV 2.0** | ✅ Opposable Conformance | Directly implements client presentation adjustments required by French and German administrative criteria. |
 | **ADA Title III & Section 508** | ✅ Safe Assistive Companion | No false "automatic compliance waivers". Pure client-side assistive instrument companion. |
 | **GDPR / ePrivacy Directive** | 🛡️ 100% Compliant | **Zero cookies, zero telemetry, zero analytics**. User preferences reside strictly in local `localStorage`. |
-| **Content Security Policy (CSP)** | ⚡ Strict CSP Safe | Zero dynamic external script execution. Air-gapped and intranet environment ready. |
-| **Core Web Vitals Impact** | 🚀 Zero Regression | Initial core transfer < 10 kB. Text-to-Speech audio engine is lazy-loaded on demand. |
+| **Content Security Policy (CSP)** | ⚡ Strict CSP Safe | Zero dynamic external script execution. Air-gapped and intranet environment ready. Font stack uses resilient offline system fonts. |
+| **Core Web Vitals Impact** | 🚀 Zero Regression | Initial core transfer < 10 kB. Zero-freeze lazy Web Speech API. 120 FPS GPU `transform` reading guides with `requestAnimationFrame`. Constructable Stylesheets (`adoptedStyleSheets`). |
 
 ---
 

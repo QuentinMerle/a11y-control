@@ -38,7 +38,12 @@ initA11yControl({ position: 'bottom-right', lang: 'en' });
 <a11y-control lang="en" position="bottom-right"></a11y-control>
 ```
 
-### 2. Zero-FOUC Anti-Flicker Snippet (Production Best Practice)
+### 3. Performance & Platform Considerations
+- **Safari & Firefox Speech API**: The component strictly isolates `window.speechSynthesis`. Voice enumeration and event listeners are never registered on mount to prevent the macOS `speechsynthesisd` main-thread freeze.
+- **Reading Tools (120 Hz / ProMotion)**: Both `readingGuide` and `readingMask` rely on `transform: translate3d` compositing, `requestAnimationFrame` ticking, and passive listeners `{ passive: true }`, ensuring 120 FPS performance without layout reflows.
+- **Styles**: Injected via native `adoptedStyleSheets` when supported, avoiding unnecessary `<head>` DOM mutations.
+
+### 4. Zero-FOUC Anti-Flicker Snippet (Production Best Practice)
 To prevent flash of unstyled content on slow connections before the ES module hydrates, insert this tiny inline script into the document's `<head>`:
 ```html
 <script>
