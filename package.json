@@ -1,6 +1,6 @@
 {
   "name": "a11y-control",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A zero-dependency native Web Component accessibility preferences toolbar & assistive companion, built to W3C APG and WCAG 2.1/2.2 standards. The lightweight, privacy-first open-source alternative to UserWay & accessiBe.",
   "type": "module",
   "main": "src/a11y-control.js",
