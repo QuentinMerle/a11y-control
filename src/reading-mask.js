@@ -7,12 +7,21 @@
 
 /** @type {HTMLElement|null} */
 let maskEl = null;
+let ticking = false;
 
 /** @param {MouseEvent|TouchEvent} e */
 function updateMaskPosition(e) {
   if (!maskEl) return;
-  const y = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
-  maskEl.style.setProperty('--mask-y', `${y}px`);
+  if (!ticking) {
+    const y = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
+    requestAnimationFrame(() => {
+      if (maskEl) {
+        maskEl.style.setProperty('--mask-y', `${y}px`);
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
 }
 
 /**
@@ -28,7 +37,7 @@ export function createReadingMask() {
   maskEl.style.setProperty('--mask-y', `${window.innerHeight / 2}px`);
   document.body.appendChild(maskEl);
 
-  document.addEventListener('mousemove', updateMaskPosition);
+  document.addEventListener('mousemove', updateMaskPosition, { passive: true });
   document.addEventListener('touchmove', updateMaskPosition, { passive: true });
 }
 
@@ -44,4 +53,5 @@ export function destroyReadingMask() {
 
   maskEl.remove();
   maskEl = null;
+  ticking = false;
 }

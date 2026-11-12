@@ -109,11 +109,6 @@ export class A11yControl extends BaseElement {
     // Expose runtime instance on window for external scripts and AI agents
     if (typeof window !== 'undefined') {
       window.a11y = this;
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.addEventListener('voiceschanged', () => {
-          if (_speechModule) this._updateVoiceSelect();
-        });
-      }
     }
   }
 

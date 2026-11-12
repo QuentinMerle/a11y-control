@@ -39,9 +39,21 @@ function loadVoices() {
   voices = window.speechSynthesis.getVoices();
 }
 
-if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
+/**
+ * Initializes the speech engine lazily.
+ * Guarantees zero contact with window.speechSynthesis until explicitly called.
+ */
+export function initSpeechEngine() {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  if (!voices.length) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = () => {
+      loadVoices();
+      if (typeof window !== 'undefined' && window.a11y?._updateVoiceSelect) {
+        window.a11y._updateVoiceSelect();
+      }
+    };
+  }
 }
 
 /**
@@ -702,6 +714,7 @@ function injectSpeechStyles() {
  * @param {number} [rate=1.0]
  */
 export function enableSpeech(lang = 'en', voiceURI = '', rate = 1.0) {
+  initSpeechEngine();
   currentLang = lang;
   if (voiceURI) selectedVoiceURI = voiceURI;
   if (rate) selectedRate = rate;

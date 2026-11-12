@@ -9,11 +9,20 @@
 
 /** @type {HTMLElement|null} */
 let guideEl = null;
+let ticking = false;
 
 /** @param {MouseEvent|TouchEvent} e */
 function updatePosition(e) {
-  const y = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
-  guideEl.style.top = `${y - 20}px`;
+  if (!ticking) {
+    const y = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+    requestAnimationFrame(() => {
+      if (guideEl) {
+        guideEl.style.transform = `translate3d(0, ${y - 20}px, 0)`;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
 }
 
 /**
@@ -28,7 +37,7 @@ export function createReadingGuide() {
   guideEl.setAttribute('aria-hidden', 'true'); // decorative, not announced
   document.body.appendChild(guideEl);
 
-  document.addEventListener('mousemove', updatePosition);
+  document.addEventListener('mousemove', updatePosition, { passive: true });
   document.addEventListener('touchmove', updatePosition, { passive: true });
 }
 
@@ -44,4 +53,5 @@ export function destroyReadingGuide() {
 
   guideEl.remove();
   guideEl = null;
+  ticking = false;
 }

@@ -611,6 +611,7 @@ export const GLOBAL_CSS = `
   /* Reading guide bar */
   #a11y-reading-guide {
     position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
     height: 40px;
@@ -619,8 +620,8 @@ export const GLOBAL_CSS = `
     border-bottom: 2px solid rgba(180,140,0,.55);
     pointer-events: none;
     z-index: 999997;
-    top: 0;
-    transition: top .06s linear;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
   }
 
   /* Reading mask overlay */
@@ -644,11 +645,29 @@ export const GLOBAL_CSS = `
   }
 `;
 
+let _globalSheet = null;
+
 /**
- * Injects the global stylesheet into <head> once.
+ * Injects the global stylesheet once.
+ * Prefers native Constructable Stylesheets (document.adoptedStyleSheets) when available,
+ * with a fallback to <style id="a11y-global-styles"> for older environments.
  * Safe to call multiple times (idempotent).
  */
 export function injectGlobalStyles() {
+  if (typeof document === 'undefined') return;
+
+  if ('adoptedStyleSheets' in document && typeof CSSStyleSheet !== 'undefined') {
+    if (!_globalSheet) {
+      _globalSheet = new CSSStyleSheet();
+      _globalSheet.replaceSync(GLOBAL_CSS);
+      if (!document.adoptedStyleSheets.includes(_globalSheet)) {
+        document.adoptedStyleSheets = [...document.adoptedStyleSheets, _globalSheet];
+      }
+    }
+    return;
+  }
+
+  // Fallback for browsers without adoptedStyleSheets
   if (document.getElementById(GLOBAL_CSS_ID)) return;
   const style = document.createElement('style');
   style.id = GLOBAL_CSS_ID;
