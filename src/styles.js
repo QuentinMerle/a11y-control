@@ -482,8 +482,19 @@ export const GLOBAL_CSS = `
   html.a11y-high-contrast h2,
   html.a11y-high-contrast h3,
   html.a11y-high-contrast h4,
+  html.a11y-high-contrast h5,
+  html.a11y-high-contrast h6,
   html.a11y-high-contrast span,
-  html.a11y-high-contrast li {
+  html.a11y-high-contrast time,
+  html.a11y-high-contrast label,
+  html.a11y-high-contrast li,
+  html.a11y-high-contrast strong,
+  html.a11y-high-contrast b,
+  html.a11y-high-contrast em,
+  html.a11y-high-contrast i,
+  html.a11y-high-contrast small,
+  html.a11y-high-contrast code,
+  html.a11y-high-contrast pre {
     background-color: #000 !important;
     color: #fff !important;
     background-image: none !important;
@@ -491,7 +502,11 @@ export const GLOBAL_CSS = `
     text-shadow: none !important;
   }
 
-  html.a11y-high-contrast a { 
+  html.a11y-high-contrast a,
+  html.a11y-high-contrast a:visited,
+  html.a11y-high-contrast a:hover,
+  html.a11y-high-contrast a:focus,
+  html.a11y-high-contrast a:active { 
     color: #ffff00 !important; 
     text-decoration: underline !important; 
     background-color: transparent !important;
@@ -499,8 +514,9 @@ export const GLOBAL_CSS = `
   
   html.a11y-high-contrast img,
   html.a11y-high-contrast video,
-  html.a11y-high-contrast picture { 
-    filter: brightness(.8) contrast(1.5) !important;
+  html.a11y-high-contrast picture,
+  html.a11y-high-contrast svg { 
+    filter: none !important;
     border: 1px solid #fff !important;
   }
 
@@ -515,6 +531,7 @@ export const GLOBAL_CSS = `
   }
 
   /* Ensure the component itself stays usable but follows high contrast */
+  html.a11y-high-contrast a11y-control::part(panel),
   html.a11y-high-contrast accessibility-menu::part(panel) {
     border: 2px solid #fff !important;
   }
@@ -574,10 +591,10 @@ export const GLOBAL_CSS = `
     hyphens: none !important;
   }
 
-  /* Big high-contrast cursor (PNG 32x32 with white border, 100% universal browser support) */
+  /* Big high-contrast cursor (Universal SVG, HiDPI Retina Ready) */
   html.a11y-big-cursor,
   html.a11y-big-cursor * {
-    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAc0lEQVR4nO3W4QoAEAyFUe//0uMHJY1Rdq+07wHslDRJSomZ1KiA5qACaIgeQEGMADhCA0ARMwAMsQJAEBbAHbEDcEXsAtwQJwAXxCngOsJ6hlrXhmsA+G7QBkIRs3UMQ6zuFYKwDqb/FwLxJII2PIqiL8ucPli29M/2VQAAAABJRU5ErkJggg==") 0 0, auto !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='36' viewBox='0 0 32 36' fill='none'%3E%3Cpath d='M1 1 L1 27 L7 21 L13 33 L18 30 L12 19 L20 19 Z' fill='%23FFFF00' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 1 1, auto !important;
   }
   html.a11y-big-cursor a,
   html.a11y-big-cursor a *,
@@ -586,8 +603,9 @@ export const GLOBAL_CSS = `
   html.a11y-big-cursor [role="button"],
   html.a11y-big-cursor [role="button"] *,
   html.a11y-big-cursor input[type="submit"],
-  html.a11y-big-cursor input[type="button"] {
-    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeUlEQVR4nO3W0QnAIAxF0Wzahd3J9kNBJBoF856U3AHMAZEo+UuY5RIVIE/iISqAhmgBFEQPgCM0ABQxAsAQMwAEYQHcESsAV8QqwA2xA3BB7AKOI6xnqHVsuAaA7wZtIBQxWscwxOxeIQjrYPp/IRBXImjDoyj6ZS+vwtSEfr3UawAAAABJRU5ErkJggg==") 0 0, pointer !important;
+  html.a11y-big-cursor input[type="button"],
+  html.a11y-big-cursor input[type="reset"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='36' viewBox='0 0 32 36' fill='none'%3E%3Cpath d='M1 1 L1 27 L7 21 L13 33 L18 30 L12 19 L20 19 Z' fill='%23FFFF00' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 1 1, pointer !important;
   }
 
   /* Reading guide bar */
